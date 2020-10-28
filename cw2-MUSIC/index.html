@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section>
+        <div class="background">
+            <div class="controls">
+                <div>
+                    <input type="radio" name="channel" id="channelOne" checked value="one">
+                    <label for="channelOne"></label>
+                    CH#1
+                </div>
+                <div>
+                    <input type="radio" name="channel" id="channelTwo" value="two">
+                    <label for="channelTwo"></label>
+                    CH#2
+                </div>
+                <div>
+                    <input type="radio" name="channel" id="channelThree">
+                    <label for="channelThree"></label>
+                    CH#3
+                </div>
+                <div>
+                    <input type="radio" name="channel" id="channelFour">
+                    <label for="channelFour"></label>
+                    CH#4
+                </div>
+                <div><button id="recordBtn">Record</button></div>
+                <button id="playBtn">&#9658</button>
+
+            </div>
+        </div>
+        <div class="key" id="boom"></audio>A</div>
+        <div class="key" id="clap"></audio>S</div>
+        <div class="key" id="hihat"></audio>D</div>
+        <div class="key" id="kick"></audio>F</div>
+        <div class="key" id="openhat"></audio>G</div>
+        <div class="key" id="ride"></audio>H</div>
+        <div class="key" id="snare"></audio>J</div>
+        <div class="key" id="tink"></audio>K</div>
+        <div class="key" id="tom"></audio>L</div>
+    </section>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
