@@ -1,5 +1,5 @@
 const body = document.querySelector('body');
-const key = document.querySelectorAll('.key');
+const keys = document.querySelectorAll('.key');
 const channels = document.querySelectorAll('input[type=radio]');
 
 let currChannel = 'channelOne';
@@ -17,6 +17,7 @@ const recordedSounds = [{
     'id': 'channelFour',
     'sounds': []
 }];
+
 const recordedStartsTime = [{
     'id': 'channelOne',
     'time': NaN
@@ -63,6 +64,7 @@ body.addEventListener('keypress', e => {
             soundId = "tom";
             break;
     }
+
     if (soundId) {
         const channelTime = recordedStartsTime.find(element => element.id === currChannel);
         const soundTime = Date.now() - channelTime.time;
