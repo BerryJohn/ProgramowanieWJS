@@ -1,4 +1,4 @@
-class BallCanvas {
+class HolCanvas {
     constructor(canvasID) {
         this.canvasID = canvasID;
         this.canvasLoc = document.querySelector(canvasID);
@@ -17,11 +17,6 @@ class BallCanvas {
     }
     clearMap() {
         this.ctx.clearRect(0, 0, this.screenWidth, this.screenHeight);
-    }
-    drawHole(x, y, radius = 50) {
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fill();
     }
 
 }
