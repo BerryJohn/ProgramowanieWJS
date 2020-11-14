@@ -10,9 +10,10 @@ class BallGame {
         }
         this.ballCanvas = new BallCanvas('#balls');
         this.playerRadius = 30;
-        this.screenWidth = window.innerWidth - 200;
-        this.screenHeight = window.innerHeight - 100;
+        this.screenWidth = window.innerWidth;
+        this.screenHeight = window.innerHeight;
         this.allHoles = [];
+        this.holeRadius = 50;
     }
     sensorsInit() {
         window.addEventListener('deviceorientation', e => {
@@ -50,15 +51,16 @@ class BallGame {
     }
     drawHole() {
         this.allHoles.forEach(hole => {
-            this.ballCanvas.drawHole(hole.x, hole.y);
+            if (hole.active)
+                this.ballCanvas.drawHole(hole.x, hole.y, this.holeRadius, hole.id);
         })
     }
 
-    randomPoint(holeRadius) {
-        const maxWidth = this.screenWidth - holeRadius;
-        const maxHeight = this.screenHeight - holeRadius;
-        const randomX = Math.floor(Math.random() * (maxWidth - holeRadius)) + holeRadius;
-        const randomY = Math.floor(Math.random() * (maxHeight - holeRadius)) + holeRadius;
+    randomPoint() {
+        const maxWidth = this.screenWidth - this.holeRadius;
+        const maxHeight = this.screenHeight - this.holeRadius;
+        const randomX = Math.floor(Math.random() * (maxWidth - this.holeRadius)) + this.holeRadius;
+        const randomY = Math.floor(Math.random() * (maxHeight - this.holeRadius)) + this.holeRadius;
         return {
             x: randomX,
             y: randomY
@@ -69,16 +71,45 @@ class BallGame {
         for (let i = 0; i < amount; i++) {
             const positions = this.randomPoint(radius);
             const hole = {
+                id: i + 1,
                 x: positions.x,
-                y: positions.y
+                y: positions.y,
+                active: true
             }
             this.allHoles.push(hole);
         }
     }
 
+    checkHoles() {
+        this.allHoles.forEach(hole => {
+            if (hole.active) { // check if player was in hole before
+                const tri = { // triangle
+                    a: {
+                        x: this.ballPosition.x,
+                        y: this.ballPosition.y
+                    },
+                    b: {
+                        x: hole.x,
+                        y: hole.y
+                    },
+                    c: {
+                        x: Math.abs(hole.x - this.ballPosition.x),
+                        y: hole.y
+                    }
+                }
+                const firstSidePow = Math.pow(Math.abs(tri.c.y - tri.a.y), 2);
+                const secondSidePow = Math.pow(Math.abs(hole.x - this.ballPosition.x), 2);
+                const hypotenuseSqrt = Math.sqrt(firstSidePow + secondSidePow);
+                if (hypotenuseSqrt < this.holeRadius - this.playerRadius) //  full player has to be in hole
+                    hole.active = false;
+            }
+        });
+    }
+
     drawGame() {
         this.drawPlayer();
         this.drawHole();
+        this.checkHoles();
         requestAnimationFrame(() => this.drawGame());
     }
 }
