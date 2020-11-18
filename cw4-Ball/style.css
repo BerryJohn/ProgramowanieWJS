@@ -12,7 +12,7 @@ body {
 }
 
 canvas {
-    transform: scale(350%);
+    /* transform: rotate(90deg); */
 }
 
 /* @keyframes pop {

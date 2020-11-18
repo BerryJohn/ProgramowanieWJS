@@ -5,6 +5,9 @@ class BallCanvas {
         this.ctx = this.canvasLoc.getContext('2d');
         this.screenWidth = window.innerWidth;
         this.screenHeight = window.innerHeight;
+        this.randomHSLColor = 0;
+        this.holeColor = `black`;
+        this.teleportHoleColor = 'hsl(176, 97%, 37%)';
     }
     createCanvas() {
         this.ctx.canvas.width = this.screenWidth;
@@ -24,18 +27,31 @@ class BallCanvas {
         this.ctx.fillStyle = 'hsl(176, 97%, 57%)';
         this.ctx.fillRect(0, 0, this.screenWidth, this.screenHeight);
     }
-    drawHole(x, y, radius = 50, id) {
+    changeColor() {
+        this.randomHSLColor++;
+        if (this.randomHSLColor > 1000)
+            this.randomHSLColor = 0;
+    }
+    drawHole(x, y, radius = 50, index) {
         this.ctx.beginPath();
-        this.ctx.shadowColor = `black`;
+        if (index != 0) {
+            this.ctx.shadowColor = this.holeColor;
+            this.ctx.fillStyle = this.holeColor;
+        } else {
+            this.ctx.shadowColor = `hsl(${this.randomHSLColor}, 68%, 50%)`;
+            this.ctx.fillStyle = `hsl(${this.randomHSLColor}, 68%, 50%)`;
+        }
         this.ctx.shadowBlur = 15;
         this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = 'black';
         this.ctx.fill();
-
-        this.ctx.font = `30px Arial`;
-        this.ctx.fillStyle = 'white';
-        this.ctx.textAlign = "center";
-        this.ctx.fillText(id, x, y + 12);
+        this.changeColor();
     }
-
+    drawTeleportHole(x, y, radius = 50) {
+        this.ctx.beginPath();
+        this.ctx.shadowColor = this.teleportHoleColor;
+        this.ctx.fillStyle = this.teleportHoleColor;
+        this.ctx.shadowBlur = 15;
+        this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        this.ctx.fill();
+    }
 }

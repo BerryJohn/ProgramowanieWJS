@@ -9,16 +9,17 @@ class BallGame {
             y: 50 // beta
         }
         this.ballCanvas = new BallCanvas('#balls');
-        this.playerRadius = 30;
         this.screenWidth = window.innerWidth;
         this.screenHeight = window.innerHeight;
         this.allHoles = [];
+        this.teleportHoles = [];
+        this.playerRadius = 30;
         this.holeRadius = 50;
     }
     sensorsInit() {
         window.addEventListener('deviceorientation', e => {
-            const maxMove = 5;
-            const minMove = -5;
+            const maxMove = 10;
+            const minMove = -10;
             const moveX = Math.round(e.alpha) > 0 ? (Math.round(e.alpha) > maxMove ? maxMove : Math.round(e.alpha)) : (Math.round(e.alpha) < minMove ? minMove : Math.round(e.alpha));
             const moveY = Math.round(e.beta) - 90 > 0 ? (Math.round(e.beta) - 90 > maxMove ? maxMove : Math.round(e.beta - 90)) : Math.round(e.beta) - 90 < minMove ? minMove : Math.round(e.beta - 90);
 
@@ -50,10 +51,17 @@ class BallGame {
             this.ballPosition.y = this.screenHeight - this.playerRadius;
     }
     drawHole() {
-        this.allHoles.forEach(hole => {
-            if (hole.active)
-                this.ballCanvas.drawHole(hole.x, hole.y, this.holeRadius, hole.id);
-        })
+        this.allHoles.forEach((hole, index) => {
+            this.ballCanvas.drawHole(hole.x, hole.y, this.holeRadius, index);
+        });
+    }
+    drawTeleportHole() {
+        this.teleportHoles.forEach(hole => {
+            const firstHole = hole.one;
+            const secondHole = hole.two;
+            this.ballCanvas.drawTeleportHole(firstHole.x, firstHole.y, this.holeRadius);
+            this.ballCanvas.drawTeleportHole(secondHole.x, secondHole.y, this.holeRadius);
+        });
     }
 
     randomPoint() {
@@ -71,45 +79,97 @@ class BallGame {
         for (let i = 0; i < amount; i++) {
             const positions = this.randomPoint(radius);
             const hole = {
-                id: i + 1,
                 x: positions.x,
-                y: positions.y,
-                active: true
+                y: positions.y
             }
             this.allHoles.push(hole);
         }
     }
 
-    checkHoles() {
-        this.allHoles.forEach(hole => {
-            if (hole.active) { // check if player was in hole before
-                const tri = { // triangle
-                    a: {
-                        x: this.ballPosition.x,
-                        y: this.ballPosition.y
-                    },
-                    b: {
-                        x: hole.x,
-                        y: hole.y
-                    },
-                    c: {
-                        x: Math.abs(hole.x - this.ballPosition.x),
-                        y: hole.y
-                    }
-                }
-                const firstSidePow = Math.pow(Math.abs(tri.c.y - tri.a.y), 2);
-                const secondSidePow = Math.pow(Math.abs(hole.x - this.ballPosition.x), 2);
-                const hypotenuseSqrt = Math.sqrt(firstSidePow + secondSidePow);
-                if (hypotenuseSqrt < this.holeRadius - this.playerRadius) //  full player has to be in hole
-                    hole.active = false;
+    checkDistance(objcetive) // HE HAS TO CONTAIN x and y !!!
+    {
+        const tri = { // triangle
+            a: {
+                x: this.ballPosition.x, // always reference to player postion
+                y: this.ballPosition.y
+            },
+            b: {
+                x: objcetive.x,
+                y: objcetive.y
+            },
+            c: {
+                x: Math.abs(objcetive.x - this.ballPosition.x),
+                y: objcetive.y
             }
+        }
+        const firstSidePow = Math.pow(Math.abs(tri.c.y - tri.a.y), 2);
+        const secondSidePow = Math.pow(Math.abs(objcetive.x - this.ballPosition.x), 2);
+        const hypotenuseSqrt = Math.sqrt(firstSidePow + secondSidePow);
+
+        return hypotenuseSqrt; // distance
+    }
+    checkHoles() {
+        this.allHoles.forEach((hole, index) => {
+            if (index == 0) { // check if player was in hole before
+                const distance = this.checkDistance(hole);
+                if ((distance < this.holeRadius - this.playerRadius) && (index == 0)) //  full player has to be in hole
+                    this.allHoles.shift();
+            }
+        });
+    }
+
+    generateTeleportHoles() {
+        const positionOne = this.randomPoint(this.holeRadius);
+        const positionTwo = this.randomPoint(this.holeRadius);
+        const holes = {
+            time: Date.now(),
+            one: {
+                x: positionOne.x,
+                y: positionOne.y
+            },
+            two: {
+                x: positionTwo.x,
+                y: positionTwo.y
+            }
+        };
+        this.teleportHoles.push(holes);
+    }
+    checkTime(timeOne, timeTwo, diff) {
+        if (diff < timeTwo - timeOne)
+            return true;
+        return false;
+    }
+    checkTeleports() {
+        this.teleportHoles.forEach(telHole => {
+
+            const distanceOne = this.checkDistance(telHole.one);
+            if (distanceOne < this.holeRadius - this.playerRadius) {
+                const currTime = Date.now();
+                if (this.checkTime(telHole.time, currTime, 5000)) {
+                    this.ballPosition.x = telHole.two.x;
+                    this.ballPosition.y = telHole.two.y;
+                    telHole.time = Date.now();
+                }
+            }
+            const distanceTwo = this.checkDistance(telHole.two);
+            if (distanceTwo < this.holeRadius - this.playerRadius) {
+                const currTime = Date.now();
+                if (this.checkTime(telHole.time, currTime, 5000)) {
+                    this.ballPosition.x = telHole.one.x;
+                    this.ballPosition.y = telHole.one.y;
+                    telHole.time = Date.now();
+                }
+            }
+
         });
     }
 
     drawGame() {
         this.drawPlayer();
         this.drawHole();
+        this.drawTeleportHole();
         this.checkHoles();
+        this.checkTeleports();
         requestAnimationFrame(() => this.drawGame());
     }
 }
