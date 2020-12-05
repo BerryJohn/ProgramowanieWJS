@@ -1,8 +1,8 @@
 class Snow {
   constructor(windowWidth = window.innerWidth) {
     this.windowWidth = parseInt(windowWidth);
-    this.maxSize = 30;
-    this.minSize = 5;
+    this.maxSize = 2;
+    this.minSize = 1;
     this.snowObj = {};
   }
   randomSize = () =>
