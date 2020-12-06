@@ -6,7 +6,6 @@ class CanvasSnow {
     this.screenHeight = window.innerHeight;
     //---------------------//
     this.snowArr = [];
-    this.snowMaxBlow = 2;
   }
   init() {
     // default canvas style and resize
@@ -38,10 +37,10 @@ class CanvasSnow {
   gravityAndWind() {
     this.snowArr.forEach((e) => {
       // Biggers snows are closer to 'watching person' so they moves faster
+      e.changeFallSpeed();
       e.y += e.fallSpeed + 0.1;
-      if (e.windPeek < this.snowMaxBlow) e.windPeek += 0.1;
-      else if (e.windPeek > this.snowMaxBlow) e.windPeek -= 0.1;
-      e.x += e.windPeek;
+      e.changePeek();
+      e.x += Math.sin(e.windPeek);
     });
     this.snowArr = this.snowArr.filter((e) => e.y < this.screenHeight); // remove snow below screen
   }
