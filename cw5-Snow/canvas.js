@@ -23,8 +23,7 @@ class CanvasSnow {
   //generate sigle snow
   generateSnow() {
     const SnowClass = new Snow();
-    const snowObj = SnowClass.generateSnow();
-    this.snowArr.push(snowObj);
+    this.snowArr.push(SnowClass);
   }
   drawSnow() {
     this.snowArr.forEach((el) => {
@@ -58,7 +57,5 @@ class CanvasSnow {
 }
 //todo:
 /*
-Jak snieg jest blizej to spada szybceij
-jak dalej to wolnije
-PERSPEKTYWA
+lepiej jest usuwac obiekty z tablicy czy resetowac polzoenie?
 */
