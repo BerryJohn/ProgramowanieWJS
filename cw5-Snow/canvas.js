@@ -7,6 +7,9 @@ class CanvasSnow {
     //---------------------//
     this.SnowClass = new Snow();
     this.snowArr = [];
+    this.frontSnowSpeed = 3;
+    this.midSnowSpeed = 2;
+    this.backSnowSpeed = 1.5;
   }
   init() {
     // default canvas style and resize
@@ -29,18 +32,25 @@ class CanvasSnow {
     this.snowArr.forEach((el) => {
       this.ctx.beginPath();
       this.ctx.fillStyle = 'white';
-      this.ctx.arc(el.position.x, el.position.y, el.size, 0, 2 * Math.PI);
+      this.ctx.arc(el.position.x, el.position.y, el.size - 0.5, 0, 2 * Math.PI);
       this.ctx.fill();
       this.ctx.closePath();
     });
   }
+
   gravity() {
     this.snowArr.forEach((e) => {
-      e.position.y += 1;
+      // snow with size 2 is closer so its move faster
+      if (e.size == 3) e.position.y += this.frontSnowSpeed;
+      else if (e.size == 2) e.position.y += this.midSnowSpeed;
+      else e.position.y += this.backSnowSpeed;
     });
+    this.snowArr = this.snowArr.filter((e) => e.position.y < this.screenHeight); // remove snow below screen
   }
   draw() {
     this.clearCanvas();
+    this.generateSnow();
+    this.generateSnow();
     this.generateSnow();
     this.drawSnow();
     this.gravity();
