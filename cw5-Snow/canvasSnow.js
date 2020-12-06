@@ -1,29 +1,23 @@
 class Snow {
   constructor(windowWidth = window.innerWidth) {
     this.windowWidth = parseInt(windowWidth);
-    this.maxSize = 3;
-    this.minSize = 1;
+    this.maxSize = 3.0;
+    this.minSize = 0.5;
+    this.size = this.random(this.maxSize, this.minSize);
     this.maxHeight = -20;
     this.minHeight = -1;
-    this.snowObj = {};
+    this.maxFallSpeed = this.size;
+    this.minFallSpeed = this.size / 2 + 0.5;
   }
-  randomSize = () =>
-    Math.floor(Math.random() * (this.maxSize - this.minSize + 1)) +
-    this.minSize;
-
-  randomWidth = () => Math.floor(Math.random() * (this.windowWidth + 1));
-
-  randomHeight = () =>
-    Math.floor(Math.random() * (this.maxHeight - this.minHeight + 1)) +
-    this.minHeight;
+  random = (max, min) => Math.floor(Math.random() * (max - min + 1)) + min;
 
   generateSnow() {
-    return (this.snowObj = {
-      position: {
-        x: this.randomWidth(),
-        y: this.randomHeight(),
-      },
-      size: this.randomSize(),
-    });
+    return {
+      x: this.random(this.windowWidth + 100, -100),
+      y: this.random(this.maxHeight, this.minHeight),
+      size: this.size,
+      fallSpeed: this.random(this.maxFallSpeed, this.minFallSpeed),
+      windPeek: 0,
+    };
   }
 }

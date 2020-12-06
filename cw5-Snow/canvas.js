@@ -5,11 +5,8 @@ class CanvasSnow {
     this.screenWidth = window.innerWidth;
     this.screenHeight = window.innerHeight;
     //---------------------//
-    this.SnowClass = new Snow();
     this.snowArr = [];
-    this.frontSnowSpeed = 3;
-    this.midSnowSpeed = 2;
-    this.backSnowSpeed = 1.5;
+    this.snowMaxBlow = 2;
   }
   init() {
     // default canvas style and resize
@@ -25,27 +22,29 @@ class CanvasSnow {
   }
   //generate sigle snow
   generateSnow() {
-    const snowObj = this.SnowClass.generateSnow();
+    const SnowClass = new Snow();
+    const snowObj = SnowClass.generateSnow();
     this.snowArr.push(snowObj);
   }
   drawSnow() {
     this.snowArr.forEach((el) => {
       this.ctx.beginPath();
       this.ctx.fillStyle = 'white';
-      this.ctx.arc(el.position.x, el.position.y, el.size - 0.5, 0, 2 * Math.PI);
+      this.ctx.arc(el.x, el.y, el.size - 0.5, 0, 2 * Math.PI);
       this.ctx.fill();
       this.ctx.closePath();
     });
   }
 
-  gravity() {
+  gravityAndWind() {
     this.snowArr.forEach((e) => {
-      // snow with size 2 is closer so its move faster
-      if (e.size == 3) e.position.y += this.frontSnowSpeed;
-      else if (e.size == 2) e.position.y += this.midSnowSpeed;
-      else e.position.y += this.backSnowSpeed;
+      // Biggers snows are closer to 'watching person' so they moves faster
+      e.y += e.fallSpeed + 0.1;
+      if (e.windPeek < this.snowMaxBlow) e.windPeek += 0.1;
+      else if (e.windPeek > this.snowMaxBlow) e.windPeek -= 0.1;
+      e.x += e.windPeek;
     });
-    this.snowArr = this.snowArr.filter((e) => e.position.y < this.screenHeight); // remove snow below screen
+    this.snowArr = this.snowArr.filter((e) => e.y < this.screenHeight); // remove snow below screen
   }
   draw() {
     this.clearCanvas();
@@ -53,7 +52,7 @@ class CanvasSnow {
     this.generateSnow();
     this.generateSnow();
     this.drawSnow();
-    this.gravity();
+    this.gravityAndWind();
     requestAnimationFrame(() => this.draw());
   }
 }
