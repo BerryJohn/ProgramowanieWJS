@@ -21,16 +21,16 @@ class Snow {
     const snowMaxBlow = 2;
     // generating 2 random liczbas and plusing and minusing them to windPeek to achive 'random' peek
     if (this.windPeek < snowMaxBlow)
-      this.windPeek += this.randomFloat(0.0, 0.5);
+      this.windPeek += Math.sin(this.randomFloat(0.0, 0.5));
     if (this.windPeek > -snowMaxBlow)
-      this.windPeek -= this.randomFloat(0.0, 0.5);
+      this.windPeek -= Math.sin(this.randomFloat(0.0, 0.5));
   }
 
   changeFallSpeed() {
     const maxFallSpeed = this.size + 1;
     if (this.fallSpeed < maxFallSpeed)
       this.fallSpeed += this.randomFloat(0.0, 1.0);
-    if (this.fallSpeed > -maxFallSpeed)
+    if (this.fallSpeed > -maxFallSpeed / 2)
       this.fallSpeed -= this.randomFloat(0.0, 0.2);
   }
 }
