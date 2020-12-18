@@ -35,6 +35,7 @@ body {
   height: 300px;
   background-color: white;
   border-radius: 10%;
+  position: relative;
 }
 
 .upperBar {
@@ -70,4 +71,12 @@ body {
 
 .bottomBar > .cityDetales {
   width: 150px;
+}
+
+.closeBtn {
+  height: 50px;
+  width: 50px;
+  background-color: green;
+  position: absolute;
+  left: 50%;
 }

@@ -15,12 +15,16 @@ class WeatherGlobal {
     const city = this.searchInput.value;
     this.addCity(city);
   }
+
   addCity(city) {
+    if (this.allCitiesLocalStorage.includes(city)) return;
     const newCity = new WeatherCity(city);
     const cityData = newCity.getJSON();
     cityData.then((data) => {
+      //data.name -> another check if city already exist in our local storage
+      if (this.allCitiesLocalStorage.includes(data.name)) return;
       this.allCities.push(city);
-      this.addToLocalStorage(city);
+      this.addToLocalStorage(data.name);
       this.addPin(data);
     });
   }
@@ -42,9 +46,21 @@ class WeatherGlobal {
     }
   }
   /// end of local storage
-  createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress) {
-    const pin = this.htmlCreator.createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress);
+  createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc) {
+    const pin = this.htmlCreator.createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc);
     this.pinsDoc.appendChild(pin);
+    const pinBtn = pin.querySelector('.closeBtn');
+
+    pinBtn.addEventListener('click', (e) => this.removePin(e.target.parentElement));
+  }
+  removePin(pin) {
+    const pinCity = pin.querySelector('.cityName');
+    const cityToRemove = pinCity.outerText;
+    //find
+    const newAllCities = this.allCitiesLocalStorage.filter((el) => el != cityToRemove);
+    this.allCitiesLocalStorage = newAllCities;
+    this.db.addToLS(this.allCitiesLocalStorage);
+    pin.remove();
   }
   addPin(data) {
     const cityName = data.name;
@@ -54,8 +70,8 @@ class WeatherGlobal {
     const cityWind = data.wind.speed;
     const cityHum = data.main.humidity;
     const cityPress = data.main.pressure;
-
-    this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress);
+    const cityWeatherDesc = data.weather[0].main;
+    this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc);
   }
   init() {
     this.citiesFromLocalStorage();
