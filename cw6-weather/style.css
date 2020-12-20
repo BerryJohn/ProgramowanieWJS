@@ -2,10 +2,13 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 body {
-  background-color: rgb(31, 31, 31);
+  background: rgb(207, 255, 247);
+  background: linear-gradient(148deg, rgba(207, 255, 247, 1) 0%, rgba(204, 204, 255, 1) 100%);
+  min-height: 100vh;
 }
 
 #searchCity {
@@ -33,9 +36,18 @@ body {
 .weatherPin {
   width: 300px;
   height: 300px;
-  background-color: white;
+  background-color: rgb(247, 254, 255);
   border-radius: 10%;
   position: relative;
+  margin: 0 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px black;
+  transition: 0.2s;
+}
+
+.weatherPin:hover {
+  transform: scale(1.2);
+  z-index: 9999;
 }
 
 .upperBar {
@@ -63,20 +75,53 @@ body {
   height: 100px;
   width: 300px;
   display: flex;
+  position: relative;
 }
 
 .bottomBar > .cityWeatherImg {
   width: 150px;
 }
 
-.bottomBar > .cityDetales {
-  width: 150px;
+.bottomBar > .cityDetales > ul {
+  list-style-type: none;
+}
+.upperBar > .cityName > img {
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+}
+.bottomBar > .cityDetales > ul > li > img {
+  width: 15px;
+  height: 15px;
+  margin: 0 10px;
+}
+.bottomBar > .cityWeatherImg {
+  position: absolute;
+  right: -50px;
+  bottom: -90px;
+  width: 250px;
+  height: 250px;
+}
+.bottomBar > .cityWeatherImg > img {
+  width: 250px;
+  height: 250px;
 }
 
 .closeBtn {
-  height: 50px;
-  width: 50px;
-  background-color: green;
+  height: 20px;
+  width: 100%;
+  background-color: rgb(189, 204, 255);
   position: absolute;
-  left: 50%;
+  top: -20px;
+  transition: 0.2s;
+  transition-delay: 0.1s;
+  text-align: center;
+  cursor: pointer;
+}
+.weatherPin:hover > .closeBtn {
+  transform: translatey(20px);
+}
+
+#pin2 {
+  order: 2;
 }

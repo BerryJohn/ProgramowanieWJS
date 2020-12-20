@@ -19,4 +19,14 @@ class WeatherCity {
     });
     return await dataPromise;
   }
+
+  async getJSONfor() {
+    let cityInfo = `http://api.openweathermap.org/data/2.5/forecast/daily?q=${this.city}&appid=${this.apiKey}`;
+    let dataPromise = fetch(cityInfo).then((response) => {
+      if (response.ok) return response.json();
+      else if (response.status === 404) return Promise.reject('404 Wrong city!');
+      else return Promise.reject('Unknown error: ' + response.status);
+    });
+    return await dataPromise;
+  }
 }

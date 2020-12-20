@@ -46,8 +46,8 @@ class WeatherGlobal {
     }
   }
   /// end of local storage
-  createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc) {
-    const pin = this.htmlCreator.createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc);
+  createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon) {
+    const pin = this.htmlCreator.createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon);
     this.pinsDoc.appendChild(pin);
     const pinBtn = pin.querySelector('.closeBtn');
 
@@ -71,7 +71,9 @@ class WeatherGlobal {
     const cityHum = data.main.humidity;
     const cityPress = data.main.pressure;
     const cityWeatherDesc = data.weather[0].main;
-    this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc);
+    const icon = data.weather[0].icon;
+    console.log(icon);
+    this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon);
   }
   init() {
     this.citiesFromLocalStorage();
