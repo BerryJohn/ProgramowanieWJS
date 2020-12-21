@@ -9,37 +9,56 @@ body {
   background: rgb(207, 255, 247);
   background: linear-gradient(148deg, rgba(207, 255, 247, 1) 0%, rgba(204, 204, 255, 1) 100%);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #searchCity {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background-color: red;
-  width: 200px;
-  height: 80px;
-  padding: 10px;
+  margin: 20px 0;
+  box-shadow: 0px 0px 8px black;
+  border-radius: 5px;
 }
 #cityName {
-  border-radius: 5px;
+  border-radius: 5px 0px 0px 5px;
   outline: none;
   border: none;
   width: 180px;
   height: 30px;
+  font-size: 20px;
+}
+#citySubmit {
+  width: 50px;
+  height: 30px;
+  background-color: white;
+  border: none;
+  outline: none;
+  border-radius: 0px 5px 5px 0px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+#citySubmit:hover {
+  background-color: rgb(204, 204, 255, 1);
 }
 
 .allPins {
   display: flex;
+  flex-wrap: wrap;
+  padding: 0 40px;
+  justify-content: center;
 }
 
 .weatherPin {
   width: 300px;
   height: 300px;
   background-color: rgb(247, 254, 255);
-  border-radius: 10%;
+  border-radius: 40px;
   position: relative;
-  margin: 0 10px;
+  margin: 10px 10px;
   overflow: hidden;
   box-shadow: 0px 0px 10px black;
   transition: 0.2s;
@@ -122,6 +141,6 @@ body {
   transform: translatey(20px);
 }
 
-#pin2 {
-  order: 2;
+.cityName {
+  font-size: 20px;
 }

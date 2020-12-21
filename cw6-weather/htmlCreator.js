@@ -34,7 +34,7 @@ class weatherHTML {
     const dateNow = new Date();
     const timeStampUTC = dateNow.getTime() + dateNow.getTimezoneOffset() * 60 * 1000 + cityHour * 1000; // *1000 60 and cityHour because getTime() has miliseconds
     const dateUTC = new Date(timeStampUTC);
-    return `${dateUTC.getHours()}:${dateUTC.getMinutes()}`;
+    return `${dateUTC.getHours()}`.padStart(2, '0') + `:${dateUTC.getMinutes()}`.padStart(2, '0'); // padStart - leading zero
   }
   createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon) {
     const weatherPin = document.createElement('div');
