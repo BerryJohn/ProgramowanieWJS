@@ -9,10 +9,12 @@ class WeatherGlobal {
     this.searchInput = document.querySelector('#cityName');
     this.searchBtn = document.querySelector('#citySubmit');
     this.pinsDoc = document.querySelector('.allPins');
+    this.interval;
   }
   /////////////////
   searchCity() {
     const city = this.searchInput.value;
+    this.searchInput.value = '';
     this.addCity(city);
   }
 
@@ -72,14 +74,21 @@ class WeatherGlobal {
     const cityPress = data.main.pressure;
     const cityWeatherDesc = data.weather[0].main;
     const icon = data.weather[0].icon;
-    console.log(icon);
     this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon);
+  }
+  updatePins() {
+    this.pinsDoc.innerHTML = '';
+    this.citiesFromLocalStorage();
+  }
+  updatePinsInit(time = 60000) {
+    this.interval = setInterval(() => this.updatePins(), time);
   }
   init() {
     this.citiesFromLocalStorage();
     this.searchBtn.addEventListener('click', () => {
       this.searchCity();
     });
+    this.updatePinsInit();
   }
 }
 

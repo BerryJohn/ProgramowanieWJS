@@ -10,8 +10,67 @@ body {
   background: linear-gradient(148deg, rgba(207, 255, 247, 1) 0%, rgba(204, 204, 255, 1) 100%);
   min-height: 100vh;
   display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.charts {
+  width: 100vw;
+  position: absolute;
+  min-height: 100vh;
+  transform: translateX(-100vw);
+  z-index: 9999;
+  transition: 0.3s;
+  transition-timing-function: ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart {
+  width: 900px;
+  height: 400px;
+}
+
+.xd {
+  transform: translateX(0);
+}
+
+.xdPins {
+  transform: translateX(100vw);
+}
+
+.pins {
+  display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+  transition: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+.chartToPin {
+  width: 70px;
+  height: 100vh;
+  position: absolute;
+  transition: 0.3s;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.05);
+}
+
+.chartToPin:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  color: black;
+}
+
+.chartToPinActive {
+  right: 0px;
+  transform: rotate(-180deg);
+  z-index: 9999;
 }
 
 #searchCity {
@@ -26,10 +85,16 @@ body {
   border-radius: 5px 0px 0px 5px;
   outline: none;
   border: none;
-  width: 180px;
+  width: 50px;
   height: 30px;
   font-size: 20px;
+  transition: 0.2s;
 }
+
+#cityName:focus {
+  width: 180px;
+}
+
 #citySubmit {
   width: 50px;
   height: 30px;
