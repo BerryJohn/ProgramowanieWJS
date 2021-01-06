@@ -33,11 +33,11 @@ body {
   height: 400px;
 }
 
-.xd {
+.arrowTransform {
   transform: translateX(0);
 }
 
-.xdPins {
+.pinsActive {
   transform: translateX(100vw);
 }
 
@@ -77,16 +77,26 @@ body {
 .chartCities {
   width: auto;
   height: 50px;
+  display: flex;
 }
 
-.chartCities .cityLabel {
+.chartCities label {
   padding: 4px 2px;
-  background-color: green;
+  margin: 2px;
+
+  border-radius: 5px;
+  box-shadow: black 0px 0px 2px;
+  transition: 0.3s;
+}
+.chartCities input[type='radio'] {
+  position: absolute;
+  visibility: hidden;
+  display: none;
 }
 
-.chartCities input[type='radio']:checked ~ .cityLabel {
-  border: 1px solid red;
-  background-color: yellow;
+.chartCities input[type='radio']:checked ~ label {
+  background-color: rgba(77, 158, 212, 0.452);
+  transform: scale(1.2);
 }
 
 #searchCity {

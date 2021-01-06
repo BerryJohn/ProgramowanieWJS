@@ -4,6 +4,6 @@ const pins = document.querySelector('.pins');
 
 arrow.addEventListener('click', () => {
   arrow.classList.toggle('chartToPinActive');
-  charts.classList.toggle('xd');
-  pins.classList.toggle('xdPins');
+  charts.classList.toggle('arrowTransform');
+  pins.classList.toggle('pinsActive');
 });

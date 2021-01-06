@@ -21,6 +21,7 @@ class WeatherCity {
   }
 
   async getJSONfor() {
+    //5day focast
     let cityInfo = `http://api.openweathermap.org/data/2.5/forecast?q=${this.city}&lang=${this.lang}&units=metric&appid=${this.apiKey}`;
     let dataPromise = fetch(cityInfo).then((response) => {
       if (response.ok) return response.json();

@@ -64,14 +64,18 @@ class weatherHTML {
     return weatherPin;
   }
   createCityRadio(city) {
+    const cityId = `${city}Id`;
+    const button = document.createElement('div');
     const labelCity = document.createElement('label');
-    labelCity.classList.add('cityLabel');
+    labelCity.htmlFor = cityId;
     const cityRadio = document.createElement('input');
+    cityRadio.id = cityId;
     cityRadio.setAttribute('type', 'radio');
     cityRadio.name = 'city';
     labelCity.innerText = city;
-    labelCity.appendChild(cityRadio);
-    return labelCity;
+    button.appendChild(cityRadio);
+    button.appendChild(labelCity);
+    return button;
   }
   createLoader() {
     const loader = document.createElement('div');
