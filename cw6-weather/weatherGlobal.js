@@ -2,6 +2,7 @@ class WeatherGlobal {
   constructor() {
     this.htmlCreator = new weatherHTML();
     this.db = new Localdb();
+    this.charts = new ChartGen();
     /////////////////////////////////////////////////////
     this.allCities = [];
     this.allCitiesLocalStorage = this.db.getCities();
@@ -41,6 +42,8 @@ class WeatherGlobal {
   addToLocalStorage(city) {
     this.allCitiesLocalStorage.push(city);
     this.db.addToLS(this.allCitiesLocalStorage);
+    //charts
+    this.charts.genCityButtons(this.allCitiesLocalStorage);
   }
   citiesFromLocalStorage() {
     for (const city of this.allCitiesLocalStorage) {
@@ -63,6 +66,8 @@ class WeatherGlobal {
     this.allCitiesLocalStorage = newAllCities;
     this.db.addToLS(this.allCitiesLocalStorage);
     pin.remove();
+    //charts
+    this.charts.genCityButtons(this.allCitiesLocalStorage);
   }
   addPin(data) {
     const cityName = data.name;
@@ -83,12 +88,14 @@ class WeatherGlobal {
   updatePinsInit(time = 60000) {
     this.interval = setInterval(() => this.updatePins(), time);
   }
+  ///
   init() {
     this.citiesFromLocalStorage();
     this.searchBtn.addEventListener('click', () => {
       this.searchCity();
     });
     this.updatePinsInit();
+    this.charts.genCityButtons(this.allCitiesLocalStorage);
   }
 }
 

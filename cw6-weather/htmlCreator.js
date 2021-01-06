@@ -63,4 +63,19 @@ class weatherHTML {
     </div>`;
     return weatherPin;
   }
+  createCityRadio(city) {
+    const labelCity = document.createElement('label');
+    labelCity.classList.add('cityLabel');
+    const cityRadio = document.createElement('input');
+    cityRadio.setAttribute('type', 'radio');
+    cityRadio.name = 'city';
+    labelCity.innerText = city;
+    labelCity.appendChild(cityRadio);
+    return labelCity;
+  }
+  createLoader() {
+    const loader = document.createElement('div');
+    loader.classList.add('loader');
+    return loader;
+  }
 }

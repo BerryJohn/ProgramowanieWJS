@@ -21,8 +21,12 @@ class WeatherCity {
   }
 
   async getJSONfor() {
-    let cityInfo = `http://api.openweathermap.org/data/2.5/forecast?q=${'Krakow'}&lang=${this.lang}&units=metric&appid=${this.apiKey}`;
-    let dataPromise = fetch(cityInfo).then((response) => response.json().then((data) => console.log(data)));
+    let cityInfo = `http://api.openweathermap.org/data/2.5/forecast?q=${this.city}&lang=${this.lang}&units=metric&appid=${this.apiKey}`;
+    let dataPromise = fetch(cityInfo).then((response) => {
+      if (response.ok) return response.json();
+      else if (response.status === 404) return Promise.reject('404 Wrong city!');
+      else return Promise.reject('Unknown error: ' + response.status);
+    });
 
     return await dataPromise;
   }
