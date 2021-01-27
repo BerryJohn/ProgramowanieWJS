@@ -4,7 +4,6 @@ class WeatherGlobal {
     this.db = new Localdb();
     this.charts = new ChartGen();
     /////////////////////////////////////////////////////
-    this.allCities = [];
     this.allCitiesLocalStorage = this.db.getCities();
     /////////////////////////////////////////////////////
     this.searchInput = document.querySelector('#cityName');
@@ -12,7 +11,7 @@ class WeatherGlobal {
     this.pinsDoc = document.querySelector('.allPins');
     this.interval;
   }
-  /////////////////
+
   searchCity() {
     const city = this.searchInput.value;
     this.searchInput.value = '';
@@ -20,13 +19,14 @@ class WeatherGlobal {
   }
 
   addCity(city) {
+    //Protection, adding already added city is forbidden
     if (this.allCitiesLocalStorage.includes(city)) return;
     const newCity = new WeatherCity(city);
     const cityData = newCity.getJSON();
     cityData.then((data) => {
       //data.name -> another check if city already exist in our local storage
+      //i created this because api search can have different language
       if (this.allCitiesLocalStorage.includes(data.name)) return;
-      this.allCities.push(city);
       this.addToLocalStorage(data.name);
       this.addPin(data);
     });
@@ -51,8 +51,8 @@ class WeatherGlobal {
     }
   }
   /// end of local storage
-  createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon) {
-    const pin = this.htmlCreator.createPin(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon);
+  createHTMLElement(data) {
+    const pin = this.htmlCreator.createPin(data);
     this.pinsDoc.appendChild(pin);
     const pinBtn = pin.querySelector('.closeBtn');
 
@@ -70,16 +70,17 @@ class WeatherGlobal {
     this.charts.genCityButtons(this.allCitiesLocalStorage);
   }
   addPin(data) {
-    const cityName = data.name;
-    const cityHour = data.timezone;
-    const cityTemp = data.main.temp;
-    const cityTempFeel = data.main.feels_like;
-    const cityWind = data.wind.speed;
-    const cityHum = data.main.humidity;
-    const cityPress = data.main.pressure;
-    const cityWeatherDesc = data.weather[0].main;
-    const icon = data.weather[0].icon;
-    this.createHTMLElement(cityName, cityHour, cityTemp, cityWind, cityHum, cityPress, cityWeatherDesc, icon);
+    const weatherData = {
+      cityName: data.name,
+      cityHour: data.timezone,
+      cityTemp: data.main.temp,
+      cityWind: data.wind.speed,
+      cityHum: data.main.humidity,
+      cityPress: data.main.pressure,
+      cityWeatherDesc: data.weather[0].main,
+      icon: data.weather[0].icon,
+    };
+    this.createHTMLElement(weatherData);
   }
   updatePins() {
     this.pinsDoc.innerHTML = '';

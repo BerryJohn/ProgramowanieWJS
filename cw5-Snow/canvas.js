@@ -54,7 +54,3 @@ class CanvasSnow {
     requestAnimationFrame(() => this.draw());
   }
 }
-//todo:
-/*
-lepiej jest usuwac obiekty z tablicy czy resetowac polzoenie?
-*/
