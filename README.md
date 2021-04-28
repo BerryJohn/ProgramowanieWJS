@@ -11,3 +11,4 @@ https://berryjohn.github.io/cw4-Ball/
 5. Snow - Simple falling snow animation
 https://berryjohn.github.io/cw5-Snow/
 6. Weather app - You can check the weather in different cities around the world. Used local storage and chart.js.
+https://berryjohn.github.io/cw6-weather/
