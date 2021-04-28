@@ -1,6 +1,7 @@
 # College projects
 
  1. Lightbox - simple pop-up gallery
+ https://berryjohn.github.io/cw1-lightbox/  (pics from lorempixel.com sometimes won't work)
  2. Drumbass 
  https://berryjohn.github.io/cw2-MUSIC/
  3. Notes - app, where u can save your notes. based on localstorage
